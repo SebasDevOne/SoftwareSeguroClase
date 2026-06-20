@@ -35,9 +35,9 @@
 
         }
 
-        // Extrae la lógica de autenticación para que sea testeable sin superglobales
-        public function validate(string $email, string $pass): bool {
-            $user = new User($email, $pass);
+        // El parámetro $user permite inyectar un mock en tests; en producción se omite
+        public function validate(string $email, string $pass, ?User $user = null): bool {
+            $user = $user ?? new User($email, $pass);
             return $user->login() !== false;
         }
     }
