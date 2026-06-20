@@ -34,4 +34,12 @@ class LoginTest extends TestCase
         $result = $login->validate('admin@test.com', '');
         $this->assertFalse($result);
     }
+
+    // TC-J03
+    public function test_validate_con_credenciales_inexistentes_retorna_false(): void
+    {
+        $login = new \Login();
+        $result = $login->validate('noexiste_' . uniqid() . '@prueba.com', 'clave_falsa_xyz');
+        $this->assertFalse($result);
+    }
 }
