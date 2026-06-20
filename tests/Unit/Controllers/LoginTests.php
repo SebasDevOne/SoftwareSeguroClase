@@ -26,4 +26,12 @@ class LoginTest extends TestCase
         $result = $login->validate('', '1234');
         $this->assertFalse($result);
     }
+
+    // TC-J02
+    public function test_validate_con_pass_vacia_retorna_false(): void
+    {
+        $login = new \Login();
+        $result = $login->validate('admin@test.com', '');
+        $this->assertFalse($result);
+    }
 }
