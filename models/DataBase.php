@@ -3,7 +3,7 @@
         #  Conexión Local
         public static function connection(){
             $hostname = "localhost";
-            $port = "3307";
+            $port = "3306";
             $database = "db_inventory";
             $username = "root";
             $password = "";

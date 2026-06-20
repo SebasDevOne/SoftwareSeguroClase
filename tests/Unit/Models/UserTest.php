@@ -7,6 +7,16 @@ use User;
 
 class UserTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        try {
+            \DataBase::connection();
+        } catch (\Exception $e) {
+            $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
+        }
+    }
+
     // ─── Constructores ───────────────────────────────────────────
 
     public function test_constructor_2_asigna_email_y_pass(): void
