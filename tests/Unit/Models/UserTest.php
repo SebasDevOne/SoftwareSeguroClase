@@ -139,4 +139,18 @@ class UserTest extends TestCase
         $result = $user->login();
         $this->assertFalse($result);
     }
+
+    // TC-J06
+    public function test_login_con_usuario_inexistente_retorna_false(): void
+    {
+        try {
+            \DataBase::connection();
+        } catch (\Exception $e) {
+            $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
+        }
+        // uniqid() garantiza que este email no existe en la tabla USERS
+        $user = new User('noexiste_' . uniqid() . '@prueba.com', 'cualquier_clave');
+        $result = $user->login();
+        $this->assertFalse($result);
+    }
 }
