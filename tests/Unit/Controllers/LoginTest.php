@@ -6,6 +6,12 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        require_once __DIR__ . '/../../../controllers/Login.php';
+    }
+
     // TC-J01
     public function test_validate_con_email_vacio_retorna_false(): void
     {

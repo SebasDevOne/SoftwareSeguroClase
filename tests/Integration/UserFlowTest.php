@@ -47,7 +47,15 @@ class UserFlowTest extends TestCase
     // TC-JD02
     public function test_login_usuario_inactivo_retorna_user_con_state_0(): void
     {
-        $user   = new User('jair@test.com', '12345');
+        // Crear usuario inactivo propio para no depender de datos externos
+        $userCode = 'TMP_' . uniqid();
+        $email    = 'inactive_' . time() . '@test.com';
+        $this->userCodesToClean[] = $userCode;
+
+        $inactivo = new User('1', $userCode, 'Inactivo', 'Test', '00000001', $email, '12345', 0);
+        $inactivo->create_user();
+
+        $user   = new User($email, '12345');
         $result = $user->login();
 
         $this->assertInstanceOf(User::class, $result);
@@ -98,7 +106,7 @@ class UserFlowTest extends TestCase
     // TC-JD05
     public function test_crear_y_leer_rol(): void
     {
-        $rolCode = 'ROL_' . uniqid();
+        $rolCode = 'TR' . rand(1000, 9999);
         $this->rolCodesToClean[] = $rolCode;
 
         $nuevoRol = new User();
@@ -116,7 +124,7 @@ class UserFlowTest extends TestCase
     // TC-JD06
     public function test_eliminar_rol_no_aparece_en_lista(): void
     {
-        $rolCode = 'ROL_' . uniqid();
+        $rolCode = 'TR' . rand(1000, 9999);
 
         $nuevoRol = new User();
         $nuevoRol->setRolCode($rolCode);
