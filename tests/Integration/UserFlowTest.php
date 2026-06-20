@@ -5,7 +5,7 @@ use Tests\TestCase;
 use User;
 use DataBase;
 
-class UserFlowTests extends TestCase
+class UserFlowTest extends TestCase
 {
     private \PDO $pdo;
     private array $userCodesToClean = [];
