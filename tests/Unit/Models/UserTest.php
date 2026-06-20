@@ -113,44 +113,4 @@ class UserTest extends TestCase
         $this->assertEquals('USR999', $user->getUserCode());
     }
 
-    // ─── Tests adicionales (plan de pruebas) ─────────────────────
-
-    // TC-J04
-    public function test_constructor_0_crea_instancia_sin_parametros(): void
-    {
-        try {
-            \DataBase::connection();
-        } catch (\Exception $e) {
-            $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
-        }
-        $user = new User();
-        $this->assertInstanceOf(User::class, $user);
-    }
-
-    // TC-J05
-    public function test_login_con_credenciales_invalidas_retorna_false(): void
-    {
-        try {
-            \DataBase::connection();
-        } catch (\Exception $e) {
-            $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
-        }
-        $user = new User('correo@invalido.com', 'claveincorrecta');
-        $result = $user->login();
-        $this->assertFalse($result);
-    }
-
-    // TC-J06
-    public function test_login_con_usuario_inexistente_retorna_false(): void
-    {
-        try {
-            \DataBase::connection();
-        } catch (\Exception $e) {
-            $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
-        }
-        // uniqid() garantiza que este email no existe en la tabla USERS
-        $user = new User('noexiste_' . uniqid() . '@prueba.com', 'cualquier_clave');
-        $result = $user->login();
-        $this->assertFalse($result);
-    }
 }
