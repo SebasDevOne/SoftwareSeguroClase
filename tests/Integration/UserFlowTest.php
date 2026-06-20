@@ -106,7 +106,7 @@ class UserFlowTest extends TestCase
     // TC-JD05
     public function test_crear_y_leer_rol(): void
     {
-        $rolCode = 'TR' . rand(1000, 9999);
+        $rolCode = (string) rand(900, 999);
         $this->rolCodesToClean[] = $rolCode;
 
         $nuevoRol = new User();
@@ -124,7 +124,7 @@ class UserFlowTest extends TestCase
     // TC-JD06
     public function test_eliminar_rol_no_aparece_en_lista(): void
     {
-        $rolCode = 'TR' . rand(1000, 9999);
+        $rolCode = (string) rand(900, 999);
 
         $nuevoRol = new User();
         $nuevoRol->setRolCode($rolCode);
