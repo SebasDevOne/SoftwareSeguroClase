@@ -126,4 +126,17 @@ class UserTest extends TestCase
         $user = new User();
         $this->assertInstanceOf(User::class, $user);
     }
+
+    // TC-J05
+    public function test_login_con_credenciales_invalidas_retorna_false(): void
+    {
+        try {
+            \DataBase::connection();
+        } catch (\Exception $e) {
+            $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
+        }
+        $user = new User('correo@invalido.com', 'claveincorrecta');
+        $result = $user->login();
+        $this->assertFalse($result);
+    }
 }
