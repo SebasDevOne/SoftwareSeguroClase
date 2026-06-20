@@ -112,4 +112,18 @@ class UserTest extends TestCase
         $user->setUserCode('USR999');
         $this->assertEquals('USR999', $user->getUserCode());
     }
+
+    // ─── Tests adicionales (plan de pruebas) ─────────────────────
+
+    // TC-J04
+    public function test_constructor_0_crea_instancia_sin_parametros(): void
+    {
+        try {
+            \DataBase::connection();
+        } catch (\Exception $e) {
+            $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
+        }
+        $user = new User();
+        $this->assertInstanceOf(User::class, $user);
+    }
 }
