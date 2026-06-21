@@ -1,17 +1,21 @@
 <?php
-// tests/Unit/Controllers/UsersTest.php
-namespace Tests\Unit\Controllers;
+namespace Tests\Integration;
 
 use Tests\TestCase;
+use DataBase;
 
-class UsersTest extends TestCase
+class UsersIntegrationTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        require_once __DIR__ . '/../../../controllers/Users.php';
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
+        $_SESSION['session'] = 'test';
+        require_once __DIR__ . '/../../controllers/Users.php';
         try {
-            \DataBase::connection();
+            DataBase::connection();
         } catch (\Exception $e) {
             $this->markTestSkipped('BD no disponible: ' . $e->getMessage());
         }

@@ -126,7 +126,22 @@
             return $this->user_state;
         }
 
-        // 4ta Parte: Persistencia a la Base de Datos
+        // 4ta Parte: Validacion
+        public static function isValidEmail(string $email): bool {
+            return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+        }
+
+        public static function isValidPassword(string $pass): bool {
+            return strlen(trim($pass)) >= 6;
+        }
+
+        public function hasRequiredFields(): bool {
+            return !empty(trim((string)$this->user_name))
+                && !empty(trim((string)$this->user_lastname))
+                && !empty(trim((string)$this->user_code));
+        }
+
+        // 5ta Parte: Persistencia a la Base de Datos
 
         # RF01_CU01 - Iniciar Sesión
         public function login(){
@@ -249,6 +264,15 @@
 
         # RF08_CU08 - Registrar Usuario
         public function create_user(){
+            if (!self::isValidEmail($this->getUserEmail())) {
+                return false;
+            }
+            if (!self::isValidPassword((string)$this->getUserPass())) {
+                return false;
+            }
+            if (!$this->hasRequiredFields()) {
+                return false;
+            }
             try {
                 $sql = 'INSERT INTO USERS VALUES (
                             :rolCode,

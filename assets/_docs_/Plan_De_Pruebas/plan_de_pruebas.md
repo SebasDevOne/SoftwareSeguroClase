@@ -1,9 +1,9 @@
 # Plan de Pruebas — Desarrollo de Software Seguro
 
-**Autores:** Juan Sebastián (apellido) y Jair David (apellido)  
-**Institución:** [Nombre de la institución]  
+**Autores:** Juan Sebastián Lopez Hernandez (979910) y Jair David Vargas  
+**Institución:** Corporacion Universitaria Minuto de Dios  
 **Curso:** Desarrollo de Software Seguro  
-**Docente:** [Nombre del docente]  
+**Docente:** Edwin Albeiro Ramos Villamil  
 **Fecha:** 20 de junio de 2026
 
 ---
@@ -16,7 +16,7 @@ El plan abarca pruebas unitarias y de integración, y está distribuido equitati
 
 ### 1.1 Aclaración sobre las pruebas existentes
 
-Las pruebas que actualmente se encuentran en el repositorio (`tests/Unit/Models/UserTest.php`, `tests/Unit/Models/DataBaseTest.php`, `tests/Unit/Controllers/LoginTests.php`, `tests/Unit/Controllers/UsersTest.php`) fueron realizadas durante las sesiones de clase como ejercicio guiado con el docente. Dichas pruebas **no forman parte del presente plan de pruebas** y se documentan únicamente como antecedente.
+Las pruebas que actualmente se encuentran en el repositorio (`tests/Unit/Models/UserTest.php`, `tests/Unit/Models/DataBaseTest.php`, `tests/Unit/Controllers/LoginTest.php`, `tests/Unit/Controllers/UsersTest.php`) fueron realizadas durante las sesiones de clase como ejercicio guiado con el docente. Dichas pruebas **no forman parte del presente plan de pruebas** y se documentan únicamente como antecedente.
 
 Como parte de la elaboración de este plan, se realizó un análisis crítico de esas pruebas existentes. A continuación se presentan los hallazgos.
 
@@ -40,7 +40,7 @@ Cubre los tres constructores sobrecargados (`__construct2`, `__construct8`, `__c
 
 Verifica que `DataBase::connection()` retorna una instancia PDO y que el modo de error es `ERRMODE_EXCEPTION`. Ambos tests están correctamente envueltos en `try/catch` con `markTestSkipped()` cuando la base de datos no está disponible, lo cual es una buena práctica para entornos sin conexión.
 
-### 2.3 `tests/Unit/Controllers/LoginTests.php`
+### 2.3 `tests/Unit/Controllers/LoginTest.php`
 
 **Estado:** Inválido — requiere refactorización.
 
@@ -75,7 +75,7 @@ public function validate(string $email, string $pass, ?User $user = null): bool 
 
 Contiene un único test `test_placeholder()` que siempre pasa (`assertTrue(true)`). No prueba ninguna funcionalidad real. Se reemplaza en el presente plan por Jair David.
 
-### 2.5 `tests/Integration/UserFlowTests.php`
+### 2.5 `tests/Integration/UserFlowTest.php`
 
 **Estado:** Archivo vacío.
 
@@ -87,10 +87,10 @@ El archivo existe pero no contiene ningún test. Corresponde implementarlo como 
 
 | Integrante | Tipo | Archivo | Tests | BD requerida |
 |---|---|---|---|---|
-| Juan Sebastián | Unitario (mock) | `tests/Unit/Controllers/LoginTests.php` | TC-J01, TC-J02, TC-J03 | ❌ No |
+| Juan Sebastián | Unitario (mock) | `tests/Unit/Controllers/LoginTest.php` | TC-J01, TC-J02, TC-J03 | ❌ No |
 | Juan Sebastián | Integración | `tests/Integration/AuthIntegrationTest.php` | TC-J04, TC-J05, TC-J06 | ✅ Sí |
-| Jair David | Integración | `tests/Integration/UserFlowTests.php` | TC-JD01 a TC-JD06 | ✅ Sí |
-| Jair David | Unitario | `tests/Unit/Controllers/UsersTest.php` | TC-JD07 | ❌ No |
+| Jair David | Integración | `tests/Integration/UserFlowTest.php` | TC-JD01 a TC-JD06 | ✅ Sí |
+| Jair David | Integración | `tests/Integration/UsersIntegrationTest.php` | TC-JD07 | ✅ Sí |
 
 ---
 
@@ -120,13 +120,13 @@ El archivo existe pero no contiene ningún test. Corresponde implementarlo como 
 | Todos los tests | `vendor/bin/phpunit` |
 | Solo suite Unit | `vendor/bin/phpunit --testsuite Unit` |
 | Solo suite Integration | `vendor/bin/phpunit --testsuite Integration` |
-| Un archivo específico | `vendor/bin/phpunit tests/Unit/Controllers/LoginTests.php` |
+| Un archivo específico | `vendor/bin/phpunit tests/Unit/Controllers/LoginTest.php` |
 
 ---
 
 ## 6. Pruebas Asignadas — Juan Sebastián
 
-### 6.1 Pruebas Unitarias con Mock — `tests/Unit/Controllers/LoginTests.php`
+### 6.1 Pruebas Unitarias con Mock — `tests/Unit/Controllers/LoginTest.php`
 
 Se reescriben completamente los tests originales (que eran inválidos) usando `createMock(User::class)`. El mock deshabilita el constructor de `User` y simula el retorno de `login()` sin acceder a la base de datos. Esto permite verificar el comportamiento del controlador `Login` de forma aislada.
 
@@ -156,7 +156,7 @@ Estos tests interactúan con la base de datos real. Se ubican en la suite `Integ
 
 ### 7.1 Casos de Prueba
 
-#### Archivo: `tests/Integration/UserFlowTests.php` (pendiente de implementar)
+#### Archivo: `tests/Integration/UserFlowTest.php` (pendiente de implementar)
 
 | ID | Nombre del test | Descripción | Resultado esperado |
 |---|---|---|---|
@@ -167,17 +167,19 @@ Estos tests interactúan con la base de datos real. Se ubican en la suite `Integ
 | TC-JD05 | `test_crear_y_leer_rol` | `create_rol()` → `read_roles()` | El array contiene el `rol_code` creado |
 | TC-JD06 | `test_eliminar_rol_no_aparece_en_lista` | `create_rol()` → `delete_rol()` → `read_roles()` | El `rol_code` eliminado no está en la lista |
 
-#### Archivo: `tests/Unit/Controllers/UsersTest.php` (reemplazar placeholder)
+#### Archivo: `tests/Integration/UsersIntegrationTest.php`
 
 | ID | Nombre del test | Descripción | Resultado esperado |
 |---|---|---|---|
-| TC-JD07 | `test_users_controller_instancia_correctamente` | `new \Users()` no lanza excepción | Instancia válida |
+| TC-JD07 | `test_users_controller_instancia_correctamente` | `new \Users()` con sesión y BD activa no lanza excepción | Instancia válida de `\Users` |
+
+**Nota:** Este test se clasificó inicialmente como unitario, pero `Users::__construct()` lee `$_SESSION['session']` y el controlador en producción requiere sesión activa. Por ese motivo se ubicó en la suite `Integration`, junto con los demás tests que dependen de estado externo (BD o sesión). Usa `markTestSkipped()` si la BD no está disponible.
 
 ### 7.2 Instrucciones para Jair David
 
 Jair David, a continuación se detallan tus responsabilidades dentro del plan de pruebas:
 
-1. **Implementar `tests/Integration/UserFlowTests.php`** con los 6 casos TC-JD01 a TC-JD06. Cada test debe:
+1. **Implementar `tests/Integration/UserFlowTest.php`** con los 6 casos TC-JD01 a TC-JD06. Cada test debe:
    - Conectarse a la base de datos real usando `DataBase::connection()`.
    - Crear los datos de prueba al inicio del test (en `setUp()` o directamente en el test).
    - Limpiar los datos al finalizar en `tearDown()` para no contaminar otros tests.

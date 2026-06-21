@@ -40,4 +40,5 @@ class AuthIntegrationTest extends TestCase
         $result = $user->login();
         $this->assertFalse($result);
     }
+
 }

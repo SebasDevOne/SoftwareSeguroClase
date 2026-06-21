@@ -52,10 +52,10 @@ class UserFlowTest extends TestCase
         $email    = 'inactive_' . time() . '@test.com';
         $this->userCodesToClean[] = $userCode;
 
-        $inactivo = new User('1', $userCode, 'Inactivo', 'Test', '00000001', $email, '12345', 0);
+        $inactivo = new User('1', $userCode, 'Inactivo', 'Test', '00000001', $email, '123456', 0);
         $inactivo->create_user();
 
-        $user   = new User($email, '12345');
+        $user   = new User($email, '123456');
         $result = $user->login();
 
         $this->assertInstanceOf(User::class, $result);
@@ -71,7 +71,7 @@ class UserFlowTest extends TestCase
 
         $nuevoUsuario = new User(
             '1', $userCode, 'David', 'Vargas',
-            '45698725', $emailPrueba, '12345', 1
+            '45698725', $emailPrueba, '123456', 1
         );
         $nuevoUsuario->create_user();
 
